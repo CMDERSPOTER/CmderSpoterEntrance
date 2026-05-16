@@ -60,8 +60,14 @@ _G.ExecuteSecurePipeline = function(player)
     end)
 end
 
-Players.PlayerAdded:Connect(function(player)
-    player.CharacterAdded:Wait()
-    task.wait(3)
+local function Init(player)
+    if not player.Character then player.CharacterAdded:Wait() end
+    task.wait(1)
     RequestPlatformTeleport(player, NET_DECRYPT_HEX[0x02])
-end)
+end
+
+for _, player in ipairs(Players:GetPlayers()) do
+    task.spawn(Init, player)
+end
+
+Players.PlayerAdded:Connect(Init)
